@@ -6,7 +6,6 @@ from django.shortcuts import render, redirect
 
 from .models import *
 from .forms import PostForm
-from search.documents import PostDocument  # Elasticsearch 색인 정보
 from django.shortcuts import get_object_or_404
 
 # .env 파일을 읽어서 현재 환경 변수로 로드하는 패키지
@@ -41,25 +40,11 @@ def main_view(request):
 
 # 게시판
 def board_view(request):
-    query = request.GET.get('q', '')
     # 모든 게시글 가져옴
     posts = Post.objects.all().order_by('-created_at')
 
-    search_results = []
-    if query:
-        # PostDocument에서 키워드 검색
-        search_result = PostDocument.search().query("match", keyword=query)
-
-        # 키워드를 포함하는 게시글 id 저장
-        post_ids = [int(hit.meta.id) for hit in search_result]
-        
-        # 검색 페이지 리턴
-        search_results = Post.objects.filter(id__in=post_ids).order_by('-created_at')
-
     return render(request, 'board.html', {
         'posts': posts,
-        'search_results': search_results,
-        'query': query,
     })
 
 # 게시글 작성 페이지
