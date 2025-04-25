@@ -1,0 +1,9 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+requests
+cryptography
+django-environ
+dotenv
+mozilla-django-oidc
+opensearch-py

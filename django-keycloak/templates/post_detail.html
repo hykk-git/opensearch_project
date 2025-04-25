@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <!--상세 페이지에 들어갈 항목: 제목, 작성자, 작성일, 키워드, 내용-->
+    <h2>{{ post.title }}</h2>
+    <p><strong>작성자:</strong> {{ post.author.email|default:"알 수 없음" }}</p>
+
+    <p><strong>작성일:</strong> {{ post.created_at }}</p>
+
+    <p><strong>키워드:</strong> {{ post.keyword }}</p>
+    <hr>
+    <p>{{ post.content }}</p>
+
+    <!--유저 본인의 게시글을 삭제-->
+    {% if user.is_authenticated and user == post.author %}
+        <form method="post" action="{% url 'board:post_delete' pk=post.pk %}">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+        </form>
+    {% endif %}
+    
+    <a href="{% url 'board:board' %}"><button>목록으로</button></a>
+</body>
+</html>
