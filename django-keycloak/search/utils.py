@@ -3,14 +3,16 @@ from search.documents import PostDocument
 
 def search_posts(search_type, search_text):
     if search_type == "keyword":
-        fields_to_search = ["keyword"]
+        fields = ["keyword"]
     elif search_type == "content":
-        fields_to_search = ["content"]
+        fields = ["content"]
+    else:
+        fields = ["keyword", "content"] 
 
     query = {
         "multi_match": {
             "query": search_text,
-            "fields": fields_to_search
+            "fields": fields
         }
     }
 
