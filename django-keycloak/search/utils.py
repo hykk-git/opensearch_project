@@ -1,4 +1,3 @@
-# search/utils.py
 from search.documents import PostDocument
 
 def search_posts(search_type, search_text):

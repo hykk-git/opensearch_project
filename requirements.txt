@@ -9,3 +9,4 @@ mozilla-django-oidc
 opensearch-py
 django-opensearch-dsl
 psycopg2-binary
+faker
