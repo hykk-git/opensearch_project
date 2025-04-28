@@ -51,8 +51,7 @@ services:
     networks:
       - app-net
 
-volumes:
-  pgdata:
-
-networks:
-  app-net:
+    command: >
+          bash -c "
+          /usr/share/opensearch/bin/opensearch-plugin install analysis-nori --batch &&
+          /usr/local/bin/docker-entrypoint.sh"

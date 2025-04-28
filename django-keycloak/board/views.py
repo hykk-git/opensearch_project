@@ -2,11 +2,11 @@ from pathlib import Path
 
 import os
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import *
 from .forms import PostForm
-from django.shortcuts import get_object_or_404
+from search.utils import search_posts
 
 # .env 파일을 읽어서 현재 환경 변수로 로드하는 패키지
 from dotenv import load_dotenv
@@ -38,13 +38,23 @@ OIDC_OP_JWKS_ENDPOINT = f"{KEYCLOAK_INTERNAL_DOMAIN}/protocol/openid-connect/cer
 def main_view(request):
     return render(request, 'main.html')
 
-# 게시판
-def board_view(request):
-    # 모든 게시글 가져옴
+# 검색 기능이 구현된 게시판
+def search_board_view(request):
+    query = request.GET.get('q', '')
+    search_type = request.GET.get('type', '')  # 추가
+
     posts = Post.objects.all().order_by('-created_at')
+    search_results = []
+
+    if query:
+        post_ids = search_posts(search_type, query)  # 검색 모듈 호출
+        search_results = Post.objects.filter(id__in=post_ids).order_by('-created_at')
 
     return render(request, 'board.html', {
         'posts': posts,
+        'search_results': search_results,
+        'query': query,
+        'search_type': search_type,
     })
 
 # 게시글 작성 페이지

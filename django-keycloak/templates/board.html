@@ -11,9 +11,16 @@
         <!-- 검색창 -->
         <form method="get" action="">
             <input type="text" name="q" value="{{ query }}" placeholder="검색할 키워드를 입력하세요">
+            
+            <!-- 검색 기준 선택 -->
+            <select name="type">
+                <option value="">전체</option>
+                <option value="keyword" {% if search_type == 'keyword' %}selected{% endif %}>키워드</option>
+                <option value="content" {% if search_type == 'content' %}selected{% endif %}>내용</option>
+            </select>
+
             <button type="submit">검색</button>
         </form>
-
         <hr>
 
         <!-- 검색어가 있을 때 검색 결과 표시 -->
