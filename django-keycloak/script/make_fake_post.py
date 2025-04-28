@@ -22,10 +22,10 @@ author = User.objects.first()
 keywords = ['여행', '해외여행', '맛집', '운동', '영화', '공부', '독서', '요리', '사진', '기술', '자연']
 
 # Post 생성
-for _ in range(50):
+for _ in range(20):
     Post.objects.create(
-        title=fake.text(max_nb_chars=20),
+        title=fake.catch_phrase(),
         keyword=random.choice(keywords),
-        content=fake.text(max_nb_chars=200),
+        content=fake.catch_phrase(),
         author=author
     )
