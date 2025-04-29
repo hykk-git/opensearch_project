@@ -1,5 +1,6 @@
 from search.documents import PostDocument
 
+# 검색 쿼리 작성 함수
 def search_posts(search_type, search_text):
     if search_type == "keyword":
         fields = ["keyword"]

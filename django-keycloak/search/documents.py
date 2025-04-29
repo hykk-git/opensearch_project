@@ -5,13 +5,13 @@ from board.models import Post
 @registry.register_document
 class PostDocument(Document):
     keyword = fields.TextField(
-        analyzer="korean",
+        analyzer="english",  
         fields={
             "raw": fields.KeywordField()
         }
     )
     content = fields.TextField(
-        analyzer="korean",
+        analyzer="english"  
     )
 
     class Index:
@@ -19,23 +19,6 @@ class PostDocument(Document):
         settings = {
             'number_of_shards': 1,
             'number_of_replicas': 0,
-            'analysis': {
-                'tokenizer': {
-                    'nori_custom_tokenizer': {
-                        'type': 'nori_tokenizer',
-                        'decompound_mode': 'mixed'
-                    }
-                },
-                'analyzer': {
-                    'korean': {
-                        'type': 'custom',
-                        'tokenizer': 'nori_custom_tokenizer',
-                        'filter': [
-                            'lowercase',
-                        ]
-                    }
-                }
-            }
         }
 
     class Django:
