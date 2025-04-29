@@ -33,7 +33,7 @@ def test_opensearch(keyword):
     end = time.time()
     return end - start, ids
 
-# 3. DB full-text search 검색
+# 3. DB full-text search 검색- AND
 # def test_db_fulltext(keyword):
 #     start = time.time()
 #     with connection.cursor() as cursor:
@@ -44,6 +44,7 @@ def test_opensearch(keyword):
 #     end = time.time()
 #     return end - start, results
 
+# DB full-text search 검색- OR
 def test_db_fulltext(keyword_str):
     # 공백으로 나눈 단어들을 OR 연산자로 연결
     keywords = keyword_str.lower().split()
@@ -60,7 +61,7 @@ def test_db_fulltext(keyword_str):
 
 # 테스트 실행
 if __name__ == "__main__":
-    content = "Green physical stage ask suggest write"
+    content = "Greens physicals stages asks suggests writes"
 
     db_index_time, db_index_results = test_db_index(content)
     opensearch_time, opensearch_results = test_opensearch(content)
