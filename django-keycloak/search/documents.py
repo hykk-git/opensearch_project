@@ -2,6 +2,7 @@ from django_opensearch_dsl import Document, fields
 from django_opensearch_dsl.registries import registry
 from board.models import Post
 
+# english tokenizer 사용, 토큰 필터 x
 @registry.register_document
 class PostDocument(Document):
     keyword = fields.TextField(

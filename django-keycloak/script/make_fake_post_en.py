@@ -4,7 +4,7 @@ import django
 import random
 from faker import Faker
 
-# Django 셋업
+# path 명시
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
@@ -12,23 +12,19 @@ django.setup()
 from board.models import Post
 from django.contrib.auth import get_user_model
 
+# 영어 기반
 fake = Faker('en_US')
 User = get_user_model()
 
 # 임시로 첫 번째 유저 사용
 author = User.objects.first()
 
-# 검색 키워드 리스트 (테스트용)
+# 랜덤 영어 키워드 리스트
 keywords = ["travel", "visit", "experience", "enjoy", "learn"]
 
-# Post 대량 생성
-bulk_posts = []
+posts = []
 for _ in range(10000): 
     random_content = fake.paragraph(nb_sentences=3) 
-    
-    # 10% 확률로 검색 키워드 추가
-    if random.random() < 0.1:
-        random_content += " " + random.choice(keywords)
     
     post = Post(
         title=fake.catch_phrase(),
@@ -36,7 +32,7 @@ for _ in range(10000):
         content=random_content,
         author=author
     )
-    bulk_posts.append(post)
+    posts.append(post)
 
-# bulk insert
-Post.objects.bulk_create(bulk_posts)
+# bulk로 한 번에 DB에 저장, default=all
+Post.objects.bulk_create(posts)

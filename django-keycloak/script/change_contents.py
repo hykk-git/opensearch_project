@@ -21,6 +21,7 @@ sample_sentences = [
 
 sample_keywords = ['여행', '해외여행', '맛집', '운동', '영화', '공부', '독서', '요리', '사진', '기술', '자연']
 
+# post content 일괄 변경
 for idx, post in enumerate(Post.objects.all()):
     post.content = sample_sentences[idx % len(sample_sentences)]
     # post.keyword = post.content = sample_keywords[idx % len(sample_sentences)]

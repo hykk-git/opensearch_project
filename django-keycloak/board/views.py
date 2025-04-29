@@ -41,14 +41,14 @@ def main_view(request):
 # 검색 기능이 구현된 게시판
 def search_board_view(request):
     query = request.GET.get('q', '')
-    search_type = request.GET.get('type', '')  # 추가
+    search_type = request.GET.get('type', '') # keyword or content
 
     posts = Post.objects.all().order_by('-created_at')
     search_results = []
 
-    if query:
-        post_ids = search_posts(search_type, query)  # 검색 모듈 호출
-        search_results = Post.objects.filter(id__in=post_ids).order_by('-created_at')
+    # opensearch 검색 호출
+    post_ids = search_posts(search_type, query) 
+    search_results = Post.objects.filter(id__in=post_ids).order_by('-created_at')
 
     return render(request, 'board.html', {
         'posts': posts,

@@ -24,7 +24,7 @@ def test_db_index(keyword):
     end = time.time()
     return end - start, results
 
-# 2. OpenSearch 역색인 검색
+# 2. OpenSearch 역색인 검색- match
 def test_opensearch(keyword):
     start = time.time()
     search = PostDocument.search().query("match", content=content)
@@ -34,6 +34,7 @@ def test_opensearch(keyword):
     return end - start, ids
 
 # 3. DB full-text search 검색- AND
+# 모든 단어가 일치하는 경우만 탐색
 # def test_db_fulltext(keyword):
 #     start = time.time()
 #     with connection.cursor() as cursor:
@@ -45,8 +46,8 @@ def test_opensearch(keyword):
 #     return end - start, results
 
 # DB full-text search 검색- OR
+# 공백으로 나눈 단어들을 OR 연산자로 연결해서 탐색
 def test_db_fulltext(keyword_str):
-    # 공백으로 나눈 단어들을 OR 연산자로 연결
     keywords = keyword_str.lower().split()
     tsquery = ' | '.join(keywords)
 

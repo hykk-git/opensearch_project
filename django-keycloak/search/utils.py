@@ -1,23 +1,51 @@
 from search.documents import PostDocument
+from typing import Any, Dict, List, Union
 
-# 검색 쿼리 작성 함수
-def search_posts(search_type, search_text):
-    if search_type == "keyword":
-        fields = ["keyword"]
-    elif search_type == "content":
-        fields = ["content"]
-    else:
-        fields = ["keyword", "content"] 
+class SearchStrategy:
+    def build_query(self, search_text: Union[str, List[str]]) -> Dict[str, Any]:
+        pass
 
-    query = {
-        "multi_match": {
-            "query": search_text,
-            "fields": fields
+
+# Keyword 검색- term query
+class KeywordSearchStrategy(SearchStrategy):
+    def build_query(self, search_text):
+        return {
+            "terms": {
+                "keyword.raw": search_text if isinstance(search_text, list) else [search_text]
+            }
         }
-    }
+
+# Content 검색- multi_match query
+class ContentSearchStrategy(SearchStrategy):
+    def build_query(self, search_text):
+        return {
+            "multi_match": {
+                "query": search_text,
+                "fields": ["content"]
+            }
+        }
+
+# 전체 검색- multi_match query
+class CombinedSearchStrategy(SearchStrategy):
+    def build_query(self, search_text):
+        return {
+           "multi_match": {
+                "query": search_text,
+                "fields": ["content"]
+            }
+        }
+
+TYPE = {
+    "keyword": KeywordSearchStrategy(),
+    "content": ContentSearchStrategy(),
+    "all": CombinedSearchStrategy(),
+}
+
+# 검색 쿼리를 날리는 함수
+def search_posts(search_type: str, search_text: Union[str, List[str]]) -> List[int]:
+    strategy = TYPE.get(search_type, TYPE["all"])
+    query = strategy.build_query(search_text)
 
     search = PostDocument.search().query(query)
     response = search.execute()
-
-    post_ids = [int(hit.meta.id) for hit in response]
-    return post_ids
+    return [int(hit.meta.id) for hit in response]
