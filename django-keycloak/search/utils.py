@@ -18,9 +18,8 @@ class KeywordSearchStrategy(SearchStrategy):
 class ContentSearchStrategy(SearchStrategy):
     def build_query(self, search_text):
         return {
-            "multi_match": {
-                "query": search_text,
-                "fields": ["content"]
+            "match": {
+                "content": search_text
             }
         }
 
@@ -30,7 +29,7 @@ class CombinedSearchStrategy(SearchStrategy):
         return {
            "multi_match": {
                 "query": search_text,
-                "fields": ["keyword", "content"] 
+                "fields": ["keyword", "content"]
             }
         }
 
