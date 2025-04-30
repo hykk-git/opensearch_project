@@ -12,7 +12,7 @@ class PostDocument(Document):
         }
     )
     content = fields.TextField(
-        analyzer="english"  
+        analyzer="english"
     )
 
     class Index:

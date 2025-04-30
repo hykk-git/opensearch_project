@@ -5,7 +5,6 @@ class SearchStrategy:
     def build_query(self, search_text: Union[str, List[str]]) -> Dict[str, Any]:
         pass
 
-
 # Keyword 검색- term query
 class KeywordSearchStrategy(SearchStrategy):
     def build_query(self, search_text):
@@ -31,7 +30,7 @@ class CombinedSearchStrategy(SearchStrategy):
         return {
            "multi_match": {
                 "query": search_text,
-                "fields": ["content"]
+                "fields": ["keyword", "content"] 
             }
         }
 
