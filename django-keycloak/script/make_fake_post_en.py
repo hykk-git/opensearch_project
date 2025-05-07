@@ -23,7 +23,7 @@ author = User.objects.first()
 keywords = ["travel", "visit", "experience", "enjoy", "learn"]
 
 posts = []
-for _ in range(10000): 
+for _ in range(100000): 
     random_content = fake.paragraph(nb_sentences=3) 
     
     post = Post(

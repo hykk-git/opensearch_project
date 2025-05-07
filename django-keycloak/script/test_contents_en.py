@@ -54,7 +54,13 @@ def test_db_fulltext(keyword_str):
     start = time.time()
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT id FROM board_post WHERE to_tsvector('english', content) @@ to_tsquery('english', %s)", [tsquery]
+            """
+            SELECT id, ts_rank(to_tsvector('english', content), to_tsquery('english', %s)) AS rank
+            FROM board_post
+            WHERE to_tsvector('english', content) @@ to_tsquery('english', %s)
+            ORDER BY rank DESC
+            """,
+            [tsquery, tsquery]
         )
         results = cursor.fetchall()
     end = time.time()
