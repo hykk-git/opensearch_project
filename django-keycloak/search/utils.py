@@ -14,7 +14,7 @@ class KeywordSearchStrategy(SearchStrategy):
             }
         }
 
-# Content 검색- multi_match query
+# Content 검색- match query
 class ContentSearchStrategy(SearchStrategy):
     def build_query(self, search_text):
         return {
