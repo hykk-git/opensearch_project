@@ -18,7 +18,7 @@ class KeywordSearchStrategy(SearchStrategy):
 class ContentSearchStrategy(SearchStrategy):
     def build_query(self, search_text):
         return {
-            "match": {
+            "match_phrase": {
                 "content": search_text
             }
         }
